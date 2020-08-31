@@ -28,13 +28,13 @@ func (m *namePrinter) Task() {
 
 func main() {
 	// 使用两个goroutine来创建工作池
-	p := work.New(2)
+	p := work.New(10)
 
 	var wg sync.WaitGroup
 
 	wg.Add(100 * len(names))
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10; i++ {
 		// 迭代names切片
 		for _, name := range names {
 			// 创建一个namePrinter并提供指定的名字
