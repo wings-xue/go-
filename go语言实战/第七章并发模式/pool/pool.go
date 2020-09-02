@@ -87,6 +87,7 @@ func (p *Pool) Close() {
 	// 将池关闭
 	p.closed = true
 
+	// 这里先关闭channel，在关闭资源
 	// 在清空通道里的资源之前，将通道关闭
 	// 如果不这样做，将发生死锁
 	close(p.resources)

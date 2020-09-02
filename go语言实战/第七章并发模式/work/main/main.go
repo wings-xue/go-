@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"gobook/go语言实战/第七章并发模式/work"
 	"log"
 	"sync"
@@ -28,12 +29,12 @@ func (m *namePrinter) Task() {
 
 func main() {
 	// 使用两个goroutine来创建工作池
-	p := work.New(10)
+	p := work.New(2)
 
 	var wg sync.WaitGroup
 
-	wg.Add(100 * len(names))
-
+	wg.Add(10 * len(names))
+	// 这里的数量应该和wg add的数量相同，否则会报错
 	for i := 0; i < 10; i++ {
 		// 迭代names切片
 		for _, name := range names {
@@ -50,7 +51,9 @@ func main() {
 
 		}
 	}
+
 	wg.Wait()
+	fmt.Println("推送完毕")
 
 	// 让工作池停止工作，等待所有现有的工作完成
 	p.Shutdonw()
