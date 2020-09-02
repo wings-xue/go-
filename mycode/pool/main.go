@@ -132,24 +132,29 @@ func createConn() (io.Closer, error) {
 	fmt.Println("create a new conn")
 	return pgsqler{}, nil
 }
+func anyPostive(values ...int) bool {
+	return false
+}
 
 func main() {
 	// Run()
-	var wg sync.WaitGroup
-	loopcount := 20
-	size := 10
-	wg.Add(loopcount)
-	pool := New(size, createConn)
-	for i := 0; i < loopcount; i++ {
-		go func() {
-			conn, _ := pool.Acquire()
-			pgcon := conn.(pgsqler)
-			pgcon.Query()
-			pool.Release(pgcon)
+	// var wg sync.WaitGroup
+	// loopcount := 20
+	// size := 10
+	// wg.Add(loopcount)
+	// pool := New(size, createConn)
+	// for i := 0; i < loopcount; i++ {
+	// 	go func() {
+	// 		conn, _ := pool.Acquire()
+	// 		pgcon := conn.(pgsqler)
+	// 		pgcon.Query()
+	// 		pool.Release(pgcon)
 
-			wg.Done()
-		}()
-	}
-	wg.Wait()
-	pool.Close()
+	// 		wg.Done()
+	// 	}()
+	// }
+	// wg.Wait()
+	// pool.Close()
+	// 测试如果函数的传参是slice是否可以直接调用
+	anyPostive()
 }
