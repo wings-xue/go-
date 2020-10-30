@@ -1,0 +1,202 @@
+package mytree
+
+// 定义二叉树
+type Tree struct {
+	Val   int
+	Left  *Tree
+	Right *Tree
+	Msg   int
+}
+
+// 		1
+// 	  2		3
+// 4      5	  6
+// New func create tree like up
+func New() *Tree {
+	t1 := &Tree{Val: 1}
+	t2 := &Tree{Val: 2}
+	t3 := &Tree{Val: 3}
+	t4 := &Tree{Val: 4}
+	t5 := &Tree{Val: 5}
+	t6 := &Tree{Val: 6}
+	t1.Left = t2
+	t1.Right = t3
+	t2.Left = t4
+	t3.Left = t5
+	t3.Right = t6
+	return t1
+}
+
+// 遍历
+// 前序（递归）
+// TreePath save tree traversal result
+var TreePath = make([]int, 0)
+
+func preprocedural(t *Tree) {
+	if t == nil {
+		return
+	}
+	// 当前节点的路径
+	TreePath = append(TreePath, t.Val)
+	preprocedural(t.Left)
+	preprocedural(t.Right)
+}
+
+// 		1
+// 	  2		3
+// 4      5	  6
+// New func create tree
+// 中序（递归）
+func midsequent(t *Tree) {
+	if t == nil {
+		return
+	}
+	// 当前节点的路径
+	midsequent(t.Left)
+	TreePath = append(TreePath, t.Val)
+	midsequent(t.Right)
+}
+
+// 后续（递归）
+func subsequent(t *Tree) {
+	if t == nil {
+		return
+	}
+	// 当前节点的路径
+	subsequent(t.Left)
+	subsequent(t.Right)
+	TreePath = append(TreePath, t.Val)
+}
+
+// 递归总结，如果一个东西需要被用到，那就把它存起来，重要的什么条件存进去以及取出来以后做什么
+
+// 前序(非递归)
+func preproceduralv2(t *Tree) []int {
+	treePath := make([]int, 0)
+	stack := make([]*Tree, 0)
+	for len(stack) != 0 || t != nil {
+		if t == nil {
+			t = stack[len(stack)-1]
+			stack = stack[0 : len(stack)-1]
+		}
+		treePath = append(treePath, t.Val)
+		if t.Right != nil {
+			stack = append(stack, t.Right)
+		}
+		t = t.Left
+	}
+	return treePath
+
+}
+
+// 中序(非递归)
+func midsequentv2(t *Tree) []int {
+	treePath := make([]int, 0)
+	stack := make([]*Tree, 0)
+	for len(stack) != 0 || t != nil {
+		if t == nil {
+			t = stack[len(stack)-1]
+			treePath = append(treePath, t.Val)
+			t = t.Right
+			stack = stack[0 : len(stack)-1]
+		} else {
+			for t != nil {
+				stack = append(stack, t)
+				t = t.Left
+			}
+
+		}
+
+	}
+	return treePath
+}
+
+// 后续(非递归)
+func subsequentv2(t *Tree) []int {
+	treePath := make([]int, 0)
+
+	stack := make([]*Tree, 0)
+
+	for len(stack) != 0 || t != nil {
+		if t != nil {
+			for t != nil {
+				stack = append(stack, t)
+				t = t.Left
+			}
+		} else {
+			t = stack[len(stack)-1]
+			stack = stack[0 : len(stack)-1]
+
+			if t.Msg == 1 {
+				treePath = append(treePath, t.Val)
+				t = nil
+			} else {
+				if t.Right != nil {
+					t.Msg = 1
+					stack = append(stack, t)
+				} else {
+					treePath = append(treePath, t.Val)
+				}
+				t = t.Right
+			}
+
+		}
+	}
+
+	return treePath
+}
+
+// 深度（分治)
+func DFS(t *Tree) []int {
+	treePath := make([]int, 0)
+	if t == nil {
+		return treePath
+	}
+	leftPath := DFS(t.Left)
+	rightPath := DFS(t.Right)
+	treePath = append(treePath, t.Val)
+	treePath = append(treePath, leftPath...)
+	treePath = append(treePath, rightPath...)
+	return treePath
+}
+
+// 深度（非分治）
+func DFSv2(t *Tree, result *[]int) {
+	if t == nil {
+		return
+	}
+	*result = append(*result, t.Val)
+	DFSv2(t.Left, result)
+	DFSv2(t.Right, result)
+}
+
+// 层次遍历
+func BFS(t *Tree) []int {
+	treePath := make([]int, 0)
+	// 通过当前层的信息获取下一层的信息
+	// 扫描一层,全部入栈
+	// 重新扫描出栈
+	if t == nil {
+		return treePath
+	}
+
+	stack := make([]*Tree, 0)
+	stack = append(stack, t)
+	for len(stack) != 0 {
+		// 开始扫描一层
+		c := len(stack)
+		for i := 0; i < c; i++ {
+			t = stack[0]
+			stack = stack[1:]
+			treePath = append(treePath, t.Val)
+			if t.Left != nil {
+				stack = append(stack, t.Left)
+			}
+			if t.Right != nil {
+				stack = append(stack, t.Right)
+			}
+		}
+	}
+
+	return treePath
+}
