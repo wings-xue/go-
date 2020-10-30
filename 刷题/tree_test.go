@@ -251,3 +251,92 @@ func TestBFS(t *testing.T) {
 		})
 	}
 }
+
+func Test_swap(t *testing.T) {
+	type args struct {
+		nums []int
+		i    int
+		j    int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+		{
+			args: args{
+				nums: []int{1, 2},
+				i:    0,
+				j:    1,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			swap(tt.args.nums, tt.args.i, tt.args.j)
+			t.Log(tt.args.nums)
+		})
+	}
+}
+
+var nums = []int{3, 4, 5, 2, 1, 8}
+var sortNums = []int{1, 2, 3, 4, 5, 8}
+
+func Test_helper(t *testing.T) {
+	type args struct {
+		nums  []int
+		left  int
+		right int
+	}
+
+	tests := []struct {
+		name string
+		args args
+		want int
+	}{
+		// TODO: Add test cases.
+		{
+			args: args{
+				nums:  nums,
+				left:  0,
+				right: len(nums),
+			},
+			want: 2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := helper(tt.args.nums, tt.args.left, tt.args.right); got != tt.want {
+				t.Errorf("helper() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_quickSort(t *testing.T) {
+	type args struct {
+		nums  []int
+		left  int
+		right int
+	}
+	tests := []struct {
+		name string
+		args args
+	}{
+		// TODO: Add test cases.
+		{
+			args: args{
+				nums: nums,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			quickSort(tt.args.nums)
+			if reflect.DeepEqual(tt.args.nums, sortNums) {
+				t.Errorf("want %v, compute %v", tt.args.nums, sortNums)
+			}
+
+		})
+	}
+}

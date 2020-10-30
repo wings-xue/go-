@@ -200,3 +200,43 @@ func BFS(t *Tree) []int {
 
 	return treePath
 }
+
+// 分治法快速排序
+
+func swap(nums []int, i, j int) {
+	nums[i], nums[j] = nums[j], nums[i]
+}
+
+func helper(nums []int, left, right int) int {
+
+	if left == right || right-left == 1 {
+		return left
+	}
+	nums = nums[left:right]
+	right = right - 1
+	direct := true
+	for left != right {
+		if nums[left] > nums[right] {
+			swap(nums, left, right)
+			direct = !direct
+		}
+
+		if direct {
+			right--
+		} else {
+			left++
+		}
+
+	}
+	return left
+}
+
+func quickSort(nums []int) {
+	if len(nums) == 0 || len(nums) == 1 {
+		return
+	}
+	i := helper(nums, 0, len(nums))
+	quickSort(nums[0:i])
+	quickSort(nums[i+1:])
+
+}
