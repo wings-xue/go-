@@ -333,10 +333,10 @@ func Test_quickSort(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			quickSort(tt.args.nums)
-			if reflect.DeepEqual(tt.args.nums, sortNums) {
+			if !reflect.DeepEqual(tt.args.nums, sortNums) {
+				t.Errorf("tt.args.num %p, sortNums %p \n", tt.args.nums, sortNums)
 				t.Errorf("want %v, compute %v", tt.args.nums, sortNums)
 			}
-
 		})
 	}
 }
