@@ -1,5 +1,7 @@
 package mytree
 
+import "math"
+
 // 定义二叉树
 type Tree struct {
 	Val   int
@@ -215,6 +217,7 @@ func helper(nums []int, left, right int) int {
 	nums = nums[left:right]
 	right = right - 1
 	direct := true
+	// 左右两个图标
 	for left != right {
 		if nums[left] > nums[right] {
 			swap(nums, left, right)
@@ -239,4 +242,65 @@ func quickSort(nums []int) {
 	quickSort(nums[0:i])
 	quickSort(nums[i+1:])
 
+}
+
+// 组合两个已经排序过得列表
+// TODO: 不应该返回err
+func merge(n1 []int, n2 []int) ([]int, error) {
+
+	n := make([]int, len(n1)+len(n2))
+	p1 := 0
+	p2 := 0
+	p := 0
+	for p < len(n) {
+		// TODO:可以优化条件
+		switch {
+		case p1 == len(n1):
+			n[p] = n2[p2]
+			p++
+			p2++
+		case p2 == len(n2):
+			n[p] = n1[p1]
+			p++
+			p1++
+		default:
+			if n1[p1] < n2[p2] {
+				n[p] = n1[p1]
+				p++
+				p1++
+			} else {
+				n[p] = n2[p2]
+				p++
+				p2++
+			}
+
+		}
+
+	}
+	return n, nil
+
+}
+
+func mergeSort(nums []int) []int {
+	if len(nums) == 1 {
+		return nums
+	}
+	if len(nums) == 2 {
+		if nums[0] > nums[1] {
+			swap(nums, 0, 1)
+		}
+		return nums
+	}
+
+	// 一个array分成两部分
+	i := int(math.Ceil(float64(len(nums)) / float64(2)))
+	n1 := nums[0:i]
+	n2 := nums[i:]
+
+	m1 := mergeSort(n1)
+	m2 := mergeSort(n2)
+	// 对两部分分别排序
+	n, _ := merge(m1, m2)
+	// 合并两个部分
+	return n
 }
