@@ -340,3 +340,72 @@ func Test_quickSort(t *testing.T) {
 		})
 	}
 }
+
+func Test_merge(t *testing.T) {
+	type args struct {
+		n1 []int
+		n2 []int
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    []int
+		wantErr bool
+	}{
+		// TODO: Add test cases.
+		{
+			args: args{
+				n1: []int{2, 7},
+				n2: []int{3, 8},
+			},
+			want:    []int{2, 3, 7, 8},
+			wantErr: false,
+		},
+		{
+			args: args{
+				n1: []int{1, 2},
+				n2: []int{8},
+			},
+			want:    []int{1, 2, 8},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := merge(tt.args.n1, tt.args.n2)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("merge() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("merge() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_mergeSort(t *testing.T) {
+	type args struct {
+		nums []int
+	}
+	tests := []struct {
+		name string
+		args args
+		want []int
+	}{
+		// TODO: Add test cases.
+		{
+			args: args{
+				nums: nums,
+			},
+			want: sortNums,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := mergeSort(tt.args.nums); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("mergeSort() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
